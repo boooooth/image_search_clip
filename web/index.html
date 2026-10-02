@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Multimodal Retrieval / CLIP + Milvus</title>
+
+    <!-- Editorial Typography: Inter + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+    <!-- Minimal Top Navigation -->
+    <nav class="top-nav">
+        <div class="nav-right">
+            <span id="latency-val" class="mono-meta">LATENCY: 0.0 MS</span>
+            <div class="k-picker">
+                <label for="top-k-select" class="mono-meta">RESULTS:</label>
+                <select id="top-k-select">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="page-container">
+
+        <!-- Headline -->
+        <h1 class="page-title">What are you looking for?</h1>
+
+        <!-- Search Mode Tabs -->
+        <div class="mode-tabs">
+            <button id="tab-text" class="tab-btn active">Text Query</button>
+            <button id="tab-image" class="tab-btn">Image Query</button>
+        </div>
+
+        <!-- Text Search Section -->
+        <div id="text-search-section" class="search-section">
+            <div class="search-input-wrapper">
+                <input type="text" id="search-input"
+                    placeholder="e.g. navy blue shirt, floral dress, black luxury watch..." autocomplete="off">
+                <button id="search-btn" class="action-btn">Search</button>
+            </div>
+            
+            <!-- Quick Vibe Chips -->
+            <div class="vibe-chips-wrapper">
+                <span class="mono-meta chip-label">QUICK QUERIES:</span>
+                <button class="vibe-chip" data-query="navy blue shirt">Navy Blue Shirt</button>
+                <button class="vibe-chip" data-query="peter england blue jeans">Blue Jeans</button>
+                <button class="vibe-chip" data-query="black dial watch">Black Watch</button>
+                <button class="vibe-chip" data-query="casual white shoes">White Shoes</button>
+                <button class="vibe-chip" data-query="women handbag">Handbag</button>
+            </div>
+        </div>
+
+        <!-- Image Upload Section -->
+        <div id="image-search-section" class="search-section hidden">
+            <div id="drop-zone" class="drop-zone">
+                <input type="file" id="image-file-input" accept="image/*" class="file-input-hidden">
+                <div class="drop-zone-content">
+                    <div id="upload-prompt" class="upload-prompt">
+                        <span class="upload-icon">↑</span>
+                        <p class="upload-title">Drop an image here or <span class="browse-link">browse</span></p>
+                        <span class="mono-meta">PNG, JPG, WEBP UP TO 10MB</span>
+                    </div>
+                    <div id="preview-wrapper" class="preview-wrapper hidden">
+                        <img id="image-preview" src="" alt="Query Preview">
+                        <div class="preview-info">
+                            <span id="preview-filename" class="mono-meta"></span>
+                            <button id="remove-image-btn" class="text-btn">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="image-action-bar">
+                <button id="search-image-btn" class="action-btn" disabled>Search</button>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="section-divider"></div>
+
+        <!-- Results Area -->
+        <section class="results-area">
+
+            <!-- Loading State -->
+            <div id="loading-state" class="state-msg hidden">
+                <span class="mono-meta">SCANNING DUAL VECTOR SPACES (IMAGE + TEXT) VIA MILVUS...</span>
+            </div>
+
+            <!-- Initial Prompt State -->
+            <div id="initial-state" class="state-msg">
+                <span class="mono-meta">ENTER A TEXT QUERY OR UPLOAD AN IMAGE TO BEGIN SEARCH</span>
+            </div>
+
+            <!-- No Results State -->
+            <div id="no-results-state" class="state-msg hidden">
+                <span class="mono-meta">NO MATCHES FOUND. TRY BROADER TERMS OR ANOTHER PHOTO.</span>
+            </div>
+
+            <!-- Results List Grid -->
+            <div id="results-grid" class="results-list hidden"></div>
+
+        </section>
+
+    </main>
+
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>
